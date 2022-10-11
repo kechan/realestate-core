@@ -7,8 +7,9 @@ from datetime import datetime
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 
+
 class ESListingsClient:
-  def __init__(self, es_ip: str, es_port: int):
+  def __init__(self, es_ip: str, es_port: int = 9200):
     self.es_ip = es_ip
     self.es_port = es_port
 
@@ -95,3 +96,8 @@ class ESListingsClient:
     payload = [r['_source'] for r in res['hits']['hits']]
 
     return payload
+
+  def clean_cache(self):
+    jsons = self.cache_dir.ls()
+    for f in jsons:
+      f.unlink()
