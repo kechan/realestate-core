@@ -4,6 +4,13 @@ import re, pickle, gzip, hashlib
 import numpy as np
 import pandas as pd
 
+try:
+  import matplotlib.pyplot as plt
+  import seaborn as sns
+except Exception as e:
+  print(e)
+  print("Not importing matplotlib and seaborn")
+
 def isNone_or_NaN(x):
   return (x is None) or (isinstance(x, float) and np.isnan(x))
 
@@ -49,3 +56,84 @@ def join_df(left, right, left_on, right_on=None, suffix='_y', how='left'):
     return left.merge(right, how=how, left_on=left_on, right_on=right_on, 
                       suffixes=("", suffix))
 
+def plot_training_loss(history):
+  ''' Plot training loss vs. epochs '''
+
+  loss = history['loss']
+  epochs = range(len(loss)) 
+
+  plt.figure(figsize=(8, 8))
+  plt.plot(epochs, loss, 'bo', label='Training loss')
+  plt.title('Training loss')
+  plt.xlabel('epochs')
+  plt.legend(loc='best')
+  plt.grid()
+
+def plot_loss_accuracy(history):
+  acc = history['acc']
+  val_acc = history['val_acc']
+  loss = history['loss']
+  val_loss = history['val_loss']
+
+  epochs = range(len(acc))
+
+  # Plotting Accuracy vs Epoch curve
+  plt.figure(figsize=(8, 8))
+
+  plt.plot(epochs, acc, 'bo', label='Training acc')
+  plt.plot(epochs, val_acc, 'b', label='Validation acc')
+  plt.title('Training and validation accuracy')
+  #plt.legend(loc='upper left')
+  plt.legend(loc='best')
+  plt.grid()
+
+
+  # Plotting Loss vs Epoch curve
+  plt.figure(figsize=(8, 8))
+
+  plt.plot(epochs, loss, 'bo', label='Training loss')
+  plt.plot(epochs, val_loss, 'b', label='Validation loss')
+  plt.title('Training and validation loss')
+  #plt.legend()
+  plt.legend(loc='best')
+  plt.grid()
+
+def plot_loss_and_metrics(history, metric_name, plot_last_n=None):
+  if plot_last_n is None:
+    metric = history[metric_name]
+    val_metric = history['val_' + metric_name]
+
+    loss = history['loss']
+    val_loss = history['val_loss']
+  else:
+    metric = history[metric_name][-plot_last_n:]
+    val_metric = history['val_' + metric_name][-plot_last_n:]
+
+    loss = history['loss'][-plot_last_n:]
+    val_loss = history['val_loss'][-plot_last_n:]
+
+  epochs = range(len(metric))
+
+  # Plotting Accuracy vs Epoch curve
+  plt.figure(figsize=(8, 8))
+
+  plt.plot(epochs, metric, 'bo', label=f'Training {metric_name}')
+  plt.plot(epochs, val_metric, 'b', label=f'Validation {metric_name}')
+  plt.title(f'Training and validation {metric_name}')
+  #plt.legend(loc='upper left')
+  plt.legend(loc='best')
+  plt.grid()
+
+
+  # Plotting Loss vs Epoch curve
+  plt.figure(figsize=(8, 8))
+
+  plt.plot(epochs, loss, 'bo', label='Training loss')
+  plt.plot(epochs, val_loss, 'b', label='Validation loss')
+  plt.title('Training and validation loss')
+  #plt.legend()
+  plt.legend(loc='best')
+  plt.grid()
+
+def combine_history(history0, history1):
+  return {metric0: val0 + val1 for (metric0, val0), (metric1, val1) in zip(history0.items(), history1.items())}
