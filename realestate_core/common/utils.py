@@ -137,3 +137,20 @@ def plot_loss_and_metrics(history, metric_name, plot_last_n=None):
 
 def combine_history(history0, history1):
   return {metric0: val0 + val1 for (metric0, val0), (metric1, val1) in zip(history0.items(), history1.items())}
+
+class PercentileScore:
+  def __init__(self, values: np.ndarray, max_score=100):
+    '''
+    Given values (a distribution), compute the percentile of a arbitrary given value
+    max_score is the maximum score that can be given to a value, default is 100. Increasing this
+    corresponds to finer grain percentille scoring
+    '''
+    self.bins = np.percentile(values, np.linspace(0, 100, max_score+1))
+    self.bins[0] = 0.
+    self.bins[-1] = 1.
+
+  def __call__(self, p):
+    if isinstance(p, np.ndarray):
+      return np.digitize(p, self.bins) - 1
+
+    return np.where(self.bins >= p)[0][0] - 1
