@@ -10,6 +10,7 @@ Path.rlf = lambda pth, pat='*': list(pth.rglob(pat))
 
 try:
   from google.cloud.storage.bucket import Bucket
+
   def _download_from_gcs(self, src, dst_dir=None, debug=False):
     try:
       blob = self.blob(src)
@@ -24,9 +25,27 @@ try:
       if debug:
         raise   
       else:
-        print('Something has gone wrong. Please debug.')
+        print('Something has gone wrong during download. Please debug.')
+
+  def _upload_to_gcs(self, src, dst_dir=None, debug=False):
+    try:
+      if dst_dir is None:
+        # upload to the root of the bucket
+        target_path = str(Path(src).name)
+      else:
+        target_path = str(Path(dst_dir)/Path(src).name)
+
+      blob = self.blob(target_path)
+      blob.upload_from_filename(src)
+    except Exception as ex:
+      if debug:
+        raise   
+      else:
+        print('Something has gone wrong during upload. Please debug.')
+      
 
   Bucket.download = _download_from_gcs
+  Bucket.upload = _upload_to_gcs
 except:
   print('google.cloud.storage.bucket.Bucket not found, please pip install google-cloud-storage')
 
