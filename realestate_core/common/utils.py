@@ -140,7 +140,7 @@ def combine_history(history0, history1):
   return {metric0: val0 + val1 for (metric0, val0), (metric1, val1) in zip(history0.items(), history1.items())}
 
 class PercentileScore:
-  def __init__(self, values: np.ndarray, max_score=100, filename: Path=None):
+  def __init__(self, values: np.ndarray=None, max_score=100, filename: Path=None):
     '''
     Given values (a distribution), compute the percentile of a arbitrary given value
     max_score is the maximum score that can be given to a value, default is 100. Increasing this
