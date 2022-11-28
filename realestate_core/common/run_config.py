@@ -13,6 +13,8 @@ if bOnColab:
   home = Path('/content/drive/MyDrive')
 elif bOnKaggle:
   home = Path('/kaggle/working')
+elif bOnGCPVM:
+  home = Path('/home/jupyter')
 else:
   home = Path('/Users/kelvinchan/kelvin@jumptools.com - Google Drive/My Drive')
 
