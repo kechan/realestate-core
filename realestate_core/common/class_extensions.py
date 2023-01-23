@@ -8,6 +8,9 @@ Path.ls = lambda x: list(x.iterdir())
 Path.lf = lambda pth, pat='*': list(pth.glob(pat))
 Path.rlf = lambda pth, pat='*': list(pth.rglob(pat))
 
+import re
+Path.lfre = lambda pth, regex='.*': [p for p in pth.glob('*') if re.search(regex, p.name)]
+
 try:
   from google.cloud.storage.bucket import Bucket
 
