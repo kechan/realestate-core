@@ -6,7 +6,7 @@ bOnColab = Path('/content').exists()
 bOnKaggle = Path('/kaggle/').exists()
 bOnGCPVM = Path('/home/jupyter').exists()
 bOnPaperspace = Path('/notebooks').exists()
-bOnLocal = Path('/Users/kelvinchan').exists()
+bOnLocal = Path('/Users/kelvinchan').exists() or Path('/Users/kechan').exists()
 
 
 if bOnColab:
@@ -16,5 +16,5 @@ elif bOnKaggle:
 elif bOnGCPVM:
   home = Path('/home/jupyter')
 else:
-  home = Path('/Users/kelvinchan/kelvin@jumptools.com - Google Drive/My Drive')
+  home = Path.home()/'kelvin@jumptools.com - Google Drive/My Drive'
 
