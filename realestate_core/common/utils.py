@@ -12,6 +12,9 @@ except Exception as e:
   print(e)
   print("Not importing matplotlib and seaborn")
 
+def sha256digest(content, truncate_len=10):
+  return hashlib.sha224(content.encode('utf-8')).hexdigest()[:truncate_len]
+
 def isNone_or_NaN(x):
   return (x is None) or (isinstance(x, float) and np.isnan(x))
 
