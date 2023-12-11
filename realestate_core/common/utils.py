@@ -12,6 +12,11 @@ except Exception as e:
   print(e)
   print("Not importing matplotlib and seaborn")
 
+def flatten_list(nested_list):
+  """Flatten a nested list of lists."""
+  return [item for sublist in nested_list for item in sublist]
+
+
 def sha256digest(content, truncate_len=10):
   return hashlib.sha224(content.encode('utf-8')).hexdigest()[:truncate_len]
 
