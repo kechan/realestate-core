@@ -11,6 +11,7 @@ Path.rlf = lambda pth, pat='*': list(pth.rglob(pat))
 
 import re
 Path.lfre = lambda pth, regex='.*': [p for p in pth.glob('*') if re.search(regex, p.name)]
+Path.rlfre = lambda pth, regex='.*': [p for p in pth.rglob('*') if re.search(regex, p.name)]
 
 try:
   from google.cloud.storage.bucket import Bucket
