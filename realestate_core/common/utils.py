@@ -48,14 +48,14 @@ def load_from_pickle(filename, compressed=False):
 
   return obj
 
-def save_to_pickle(obj, filename, compressed=False):
+def save_to_pickle(obj, filename, compressed=False, protocol=pickle.HIGHEST_PROTOCOL):
   try:
     if not compressed:
       with open(str(filename), 'wb') as f:
-        pickle.dump(obj, f, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(obj, f, protocol=protocol)
     else:
       with gzip.open(str(filename), 'wb') as f:
-        pickle.dump(obj, f, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(obj, f, protocol=protocol)
 
   except Exception as ex:
     print(ex)
